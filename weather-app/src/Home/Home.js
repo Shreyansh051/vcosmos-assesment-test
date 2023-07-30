@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import FontAwesomeIcon from ""
+import 'weather-icons/css/weather-icons.css';
 import '../Css/Home.css';
 
 const API_KEY = '6dc5f8c3e47d8292970c1f3895145668';
@@ -12,8 +12,7 @@ const WeatherApp = () => {
     const [unit, setUnit] = useState('metric'); // 'metric' for Celsius, 'imperial' for Fahrenheit
     const [forecast, setForecast] = useState([]);
 
-
-
+    // Function to get the 5-day forecast data
     const getForecast = useCallback(async (lat, lon) => {
         try {
             const response = await axios.get(
@@ -26,6 +25,7 @@ const WeatherApp = () => {
         }
     }, [unit]);
 
+    // Function to get weather data by latitude and longitude
     const getWeatherByCoords = useCallback(async (latitude, longitude) => {
         try {
             const response = await axios.get(
@@ -41,6 +41,8 @@ const WeatherApp = () => {
             setForecast([]);
         }
     }, [unit, getForecast]);
+
+    // UseEffect to get weather data for user's current location when the component mounts
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
@@ -50,7 +52,7 @@ const WeatherApp = () => {
         }
     }, [getWeatherByCoords]);
 
-
+    // Function to search weather data for the provided city
     const searchWeather = useCallback(async (e) => {
         e.preventDefault();
         try {
@@ -68,57 +70,98 @@ const WeatherApp = () => {
         }
     }, [query, unit, getForecast]);
 
+    // Function to toggle temperature units between Celsius and Fahrenheit
     const toggleUnit = useCallback(() => {
         setUnit((prevUnit) => (prevUnit === 'metric' ? 'imperial' : 'metric'));
     }, []);
 
+    // Function to format the date for display
     const formatDate = (timestamp) => {
         const date = new Date(timestamp * 1000);
         return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
     };
 
+    // Function to get the appropriate weather icon based on weather conditions
+    const getWeatherIcon = (weatherCondition) => {
+        switch (weatherCondition) {
+            case 'Clear':
+                return 'wi-day-sunny';
+            case 'Clouds':
+                return 'wi-cloudy';
+            case 'Rain':
+                return 'wi-rain';
+            case 'Snow':
+                return 'wi-snow';
+            case 'Thunderstorm':
+                return 'wi-thunderstorm';
+            default:
+                return 'wi-day-cloudy';
+        }
+    };
 
     return (
         <div className="weather-app">
             <h1 className="heading">Weather App</h1>
-            
+
+            {/* Search form to search weather by city name */}
             <form onSubmit={searchWeather}>
                 <input
-                className='searchbar'
+                    className='searchbar'
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Enter City Name"
                 />
-                <button type="submit">Search</button>
+                <button type="submit"> Search <i className="fa fa-search" aria-hidden="true" /></button>
             </form>
+
+            {/* Display weather info if available, otherwise show an error message */}
             {weather ? (
-                <div className="weather-info">
+                <div className="weather-info show"> {/* Use 'show' class to animate the display */}
                     <div className='flexdiv'>
-                    <h2 className='heading2'>{weather.name}</h2>
-                    <button className='unit-toggle' onClick={toggleUnit}>
-                     {unit === 'metric' ? ' ° F' : ' ° C'}
-                </button>
+                        <h2 className='heading2'>{weather.name}</h2>
+                        <button className='unit-toggle' onClick={toggleUnit}>
+                            {unit === 'metric' ? ' ° F' : ' ° C'}
+                        </button>
                     </div>
                     <div className='items-div'>
-                    <p><FontAwesomeIcon icon="fa-solid fa-temperature-quarter" />Temperature: {weather.main.temp} °   {unit === 'metric' ? 'C' : 'F'}</p>
-                    <p>Condition: {weather.weather[0].main }</p>
-                    <p>feels_like: {weather.main.feels_like}  ° {unit === 'metric' ? 'C' : 'F'}</p>
-                    <p>Wind Speed: {weather.wind.speed}  m/s</p>
-                    <p>Humidity: {weather.main.humidity} %</p>
+                        {/* Icons for each weather data */}
+                        <p>
+                            <i className="fa fa-thermometer-half" style={{ color: 'orange', fontSize: '1.2em', marginRight: '5px' }} />
+                            Temperature: {weather.main.temp} ° {unit === 'metric' ? 'C' : 'F'}
+                        </p>
+                        <p>
+                            <i className="fa fa-cloud" style={{ color: 'orange', fontSize: '1.2em', marginRight: '5px' }} />
+                            Condition: {weather.weather[0].main}
+                        </p>
+                        <p>
+                            <i className="fa fa-thermometer-three-quarters" style={{ color: 'orange', fontSize: '1.2em', marginRight: '5px' }} />
+                            Feels-like: {weather.main.feels_like} ° {unit === 'metric' ? 'C' : 'F'}
+                        </p>
+                        <p>
+                            <i className="fa fa-wind" style={{ color: 'orange', fontSize: '1.2em', marginRight: '5px' }} />
+                            Wind Speed: {weather.wind.speed} m/s
+                        </p>
+                        <p>
+                            <i className="fa fa-tint" style={{ color: 'orange', fontSize: '1.2em', marginRight: '5px' }} />
+                            Humidity: {weather.main.humidity} %
+                        </p>
                     </div>
                 </div>
             ) : (
                 <p className="error">{error}</p>
             )}
-           
+
+            {/* Display the 5-day forecast if available */}
             {forecast.length > 0 && (
-                <div className="forecast">
+                <div className="forecast show"> {/* Use 'show' class to animate the display */}
                     <h2>5-Day Forecast</h2>
                     <div className="forecast-container">
+                        {/* Map through forecast data and display each forecast day */}
                         {forecast.slice(0, 5).map((day) => (
                             <div className="forecast-day" key={day.dt}>
                                 <p className="day">{formatDate(day.dt)}</p>
+                                <i className={`wi ${getWeatherIcon(day.weather[0].main)}`} style={{ color: 'orange', fontSize: '1.2em', marginRight: '5px' }} />
                                 <p className="temp">
                                     {day.temp.day}°{unit === 'metric' ? 'C' : 'F'}
                                 </p>
@@ -128,7 +171,6 @@ const WeatherApp = () => {
                     </div>
                 </div>
             )}
-
 
         </div>
     );
