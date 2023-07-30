@@ -193,7 +193,7 @@ button:hover {
  */
 
 
- body {
+body {
     background-color: whitesmoke;
     font-family: 'Open Sans', sans-serif;
 }
@@ -268,7 +268,7 @@ button:hover {
     box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
-.forecast > h2 {
+.forecast>h2 {
     background-color: black;
     color: white;
     border-radius: 80px;
@@ -284,9 +284,11 @@ button:hover {
     padding: 5px;
     transition: background-color 0.3s ease;
 }
+
 .unit-toggle:hover {
     background-color: rgba(0, 0, 0, 0.571);
 }
+
 .heading {
     margin-top: -2px;
     padding: 20px;
@@ -331,7 +333,7 @@ button:hover {
     height: 400px;
 }
 
-.items-div > p {
+.items-div>p {
     font-size: large;
     line-height: 2;
     font-weight: 600;
@@ -350,10 +352,12 @@ button:hover {
 
 @media screen and (max-width: 500px) {
     .searchbar {
-        width: calc(100% - 80px); /* Calculate the width to accommodate both input and button */
+        width: calc(100% - 80px);
+        /* Calculate the width to accommodate both input and button */
     }
 
     button {
-        width: 80px; /* Set a fixed width for the button in responsive view */
+        width: 80px;
+        /* Set a fixed width for the button in responsive view */
     }
 }
