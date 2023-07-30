@@ -35,6 +35,7 @@ Weather App Preview
 
 Deployment
 This Weather App has been deployed using Netlify. You can access it online by following this link.
+Deploy-link-https://64c65f9d23a9c301b52059fa--steady-liger-1c4172.netlify.app/
 
 Feel free to explore and experience the app. Stay informed about the weather conditions in your favorite cities effortlessly!
 
