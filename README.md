@@ -1,1 +1,0 @@
-# vcosmos-assesment-test
