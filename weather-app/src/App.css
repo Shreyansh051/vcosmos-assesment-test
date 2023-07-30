@@ -1,4 +1,4 @@
-/* .App {
+.App {
   text-align: center;
 }
 
@@ -35,37 +35,4 @@
   to {
     transform: rotate(360deg);
   }
-} */
-.weather-app {
-  text-align: center;
-  margin-top: 50px;
-  font-family: Arial, sans-serif;
-}
-
-.weather-info {
-  margin-top: 20px;
-}
-
-.error {
-  color: red;
-}
-
-input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 8px;
-}
-
-button {
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
 }
