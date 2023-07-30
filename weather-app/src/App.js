@@ -1,9 +1,9 @@
-import './App.css';
-import WeatherApp from"./Home/Home"
+import WeatherApp from "./Home/Home";
+
 function App() {
   return (
-    <div>
-      <WeatherApp/>
+    <div className="App">
+     <WeatherApp/>
     </div>
   );
 }
